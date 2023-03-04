@@ -6,14 +6,13 @@
 
 # __Installation__:
 1. Install [python](https://www.python.org/downloads/) if not installed.
-2. Install dependencies.
-Enter these commands one by one into the command prompt:
+2. Install dependencies. Enter these commands one by one into the command prompt (you can use venv if you know how.):
 ```
 pip install rich
 pip install playwright
 playwright install firefox
 ```
-You can use venv if you know how.
 3. Download repository from releases or branch.
+
 # Contribution
 __Feel free to contribute!__
