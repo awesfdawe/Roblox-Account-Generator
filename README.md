@@ -1,5 +1,5 @@
 # Roblox Account Generator
-### Roblox Account Generator - script written in python using Playwright to semi-automate the process of creating accounts in roblox.
+### Roblox Account Generator - script written in python using Playwright to semi-automate the process of creating accounts in roblox. It also handle errors like cookie banner and username already taken.
 
 # __Showcase video:__
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/GTQkhoMjg6M/0.jpg)](http://www.youtube.com/watch?v=GTQkhoMjg6M "showcase")
