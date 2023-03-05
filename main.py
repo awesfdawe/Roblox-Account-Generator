@@ -39,7 +39,7 @@ def registration():
         browser = pw.firefox.launch(headless=False)  # * Don't try to use chromium browsers because they got detected by roblox as bot.
         context = browser.new_context()
         page = context.new_page()
-        
+        page.set_viewport_size({"width": 640, "height": 480})
         page.route('https://apis.roblox.com/universal-app-configuration/v1/behaviors/cookie-policy/content', lambda route: route.abort()) # Blocks cookies banner
         page.goto('https://www.roblox.com')
         page.locator('//*[@id="MonthDropdown"]').select_option('January')
