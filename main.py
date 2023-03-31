@@ -1,7 +1,6 @@
 import os
 import random
 import string
-import json
 from rich.console import Console
 from rich.prompt import IntPrompt
 from playwright.sync_api import sync_playwright
@@ -21,8 +20,9 @@ def generate_nickname():
             words = [line.strip() for line in file.readlines()]
             return random.choice(words) + str(random.randint(10000, 999999))
     except FileNotFoundError:
-        console.print('[bold red]Error:[/bold red] nicknames.txt file not found!')
-        console.input('Press enter to exit... ')
+        console.log('[bold red]Error:[/] nicknames.txt file not found!')
+        console.print('[bold]Press enter to exit...[/]')
+        console.input()
         exit()
 
 
@@ -62,8 +62,9 @@ def registration():
             page.locator('//*[@id="signup-button"]').click(timeout=0)
         if signup_validate.value.status == 429:
             browser.close()
-            console.log(f'[bold red]Error:[/bold red] too many requests! Try to change your IP (you can use VPN, preferably paid)')
-            console.input('Press enter to continue...')
+            console.log('[bold red]Error:[/] too many requests! Try to change your IP (you can use VPN, preferably paid)')
+            console.print('[bold]Press enter to continue...[/]')
+            console.input()
             return None
         else:
             with page.expect_response('https://client-api.arkoselabs.com/fc/gt2/public_key/**') as signup_validate:
@@ -72,8 +73,9 @@ def registration():
                 page.wait_for_url('https://www.roblox.com/home?nu=true', timeout=0)
             else:
                 browser.close()
-                console.log(f'[bold red]Error:[/bold red] Unknown error! Try to change your IP (you can use VPN, preferably paid)')
-                console.input('Press enter to continue...')
+                console.log('[bold red]Error:[/] Unknown error! Try to change your IP (you can use VPN, preferably paid)')
+                console.print('[bold]Press enter to continue...[/]')
+                console.input()
                 return None
 
         with open('cookies.txt', 'a') as file:
@@ -85,19 +87,21 @@ def registration():
 
         with open('accounts.txt', 'a') as file:
             file.write(f'{nickname}:{password}\n')
-        console.log(f'[bold green]Account generated successfully[/bold green]', ':white_check_mark:')
+        console.log('[bold green]Account generated successfully[/]', ':white_check_mark:')
         browser.close()
         return None
 
 
 def main():
-    clear()
-    amount = IntPrompt.ask('Enter how many accounts to generate')
-    clear()
-    for _ in range(amount):
-        with console.status('Generating...', spinner='line'):
-            registration()
-
+    try:
+        clear()
+        amount = IntPrompt.ask('Enter how many accounts to generate')
+        clear()
+        for _ in range(amount):
+            with console.status('Generating...', spinner='line'):
+                registration()
+    except BaseException:
+        pass
 
 if __name__ == '__main__':
     main()
