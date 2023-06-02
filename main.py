@@ -33,6 +33,9 @@ def clear():
 
 
 def registration():
+    status = console.status('Generating...', spinner='line')
+    status.start()
+
     with sync_playwright() as pw:
         nickname = generate_nickname()
         password = generate_password()
@@ -62,21 +65,13 @@ def registration():
             page.locator('//*[@id="signup-button"]').click(timeout=0)
         if signup_validate.value.status == 429:
             browser.close()
+            status.stop()
             console.log('[bold red]Error:[/] too many requests! Try to change your IP (you can use VPN, preferably paid)')
             console.print('[bold]Press enter to continue...[/]')
             console.input()
             return None
         else:
-            with page.expect_response('https://client-api.arkoselabs.com/fc/gt2/public_key/**') as signup_validate:
-                pass
-            if signup_validate.value.ok:
-                page.wait_for_url('https://www.roblox.com/home?nu=true', timeout=0)
-            else:
-                browser.close()
-                console.log('[bold red]Error:[/] Unknown error! Try to change your IP (you can use VPN, preferably paid)')
-                console.print('[bold]Press enter to continue...[/]')
-                console.input()
-                return None
+            page.wait_for_url('https://www.roblox.com/home?nu=true', timeout=0)
 
         with open('cookies.txt', 'a') as file:
             cookies = context.cookies()
@@ -89,6 +84,7 @@ def registration():
             file.write(f'{nickname}:{password}\n')
         console.log('[bold green]Account generated successfully[/]', ':white_check_mark:')
         browser.close()
+        status.stop()
         return None
 
 
@@ -98,10 +94,9 @@ def main():
         amount = IntPrompt.ask('Enter how many accounts to generate')
         clear()
         for _ in range(amount):
-            with console.status('Generating...', spinner='line'):
-                registration()
-    except BaseException:
-        pass
+            registration()
+    except KeyboardInterrupt:
+        exit()
 
 if __name__ == '__main__':
     main()
